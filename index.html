@@ -75,20 +75,24 @@ p{margin:0}
 
 /* ---------- hero ---------- */
 .hero{padding-block:clamp(40px,8vw,96px) clamp(40px,6vw,72px);border-bottom:1px solid var(--line);position:relative;overflow:hidden}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.9fr);gap:clamp(24px,5vw,64px);align-items:center}
-@media (max-width:860px){.hero-grid{grid-template-columns:minmax(0,1fr)}}
-.wordmark{font-weight:900;font-variation-settings:"wdth" 118;font-size:clamp(4.2rem,15vw,10.5rem);letter-spacing:-.01em;line-height:.86;color:var(--bone)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:clamp(24px,5vw,64px);row-gap:8px;align-items:end}
+.hero-grid .wordmark{grid-column:1/-1}
+@media (max-width:760px){.hero-grid{grid-template-columns:minmax(0,1fr)}}
+.wordmark{font-weight:900;font-variation-settings:"wdth" 118;font-size:clamp(3.6rem,17vw,12rem);letter-spacing:-.01em;line-height:.86;color:var(--bone);white-space:nowrap}
 .wordmark .sq{width:.19em;height:.19em}
 .strap{display:flex;flex-wrap:wrap;gap:.6em 1em;margin-top:28px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;font-size:clamp(.78rem,1.6vw,.98rem)}
 .strap .sl{color:var(--signal);letter-spacing:0}
 .hero .lede{margin-top:28px;max-width:34em;font-size:clamp(1.05rem,1.8vw,1.22rem);color:#cfc9bf}
 .hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
-.hero-card{position:relative;background:var(--plate);border:1px solid var(--line);border-radius:22px;padding:22px;display:grid;gap:14px;max-width:420px;justify-self:center;width:100%}
-.hero-card .icon{width:76px;height:76px;position:absolute;top:-24px;right:-14px;filter:drop-shadow(0 10px 18px rgba(0,0,0,.6))}
-.hero-card .fig{background:var(--ink);border-radius:14px;aspect-ratio:1/1;max-width:100%}
-.hero-card .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
-.hero-card .big{font-family:var(--f-mono);font-weight:600;font-size:2.4rem;line-height:1}
-.hero-card .ex{font-weight:800;font-variation-settings:"wdth" 108;font-size:1.15rem}
+.hero-card{position:relative;background:color-mix(in srgb,var(--plate) 88%,transparent);backdrop-filter:blur(4px);border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;width:250px;max-width:100%;justify-self:end}
+@media (max-width:760px){.hero-card{justify-self:start;width:min(250px,100%)}}
+.hero-card .icon{width:22px;height:22px}
+.hero-card .fig{background:var(--ink);border-radius:10px;aspect-ratio:4/3;width:100%}
+.hero-card .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.hero-card .big{font-family:var(--f-mono);font-weight:600;font-size:1.5rem;line-height:1}
+.hero-card .ex{font-weight:800;font-variation-settings:"wdth" 108;font-size:.9rem}
+.hero-card .label{font-size:.62rem;letter-spacing:.16em}
+.hero-card .note{font-size:.74rem}
 .tick-strip{display:flex;gap:4px}
 .tick-strip i{flex:1;height:6px;border-radius:2px;background:var(--line)}
 .tick-strip i.on{background:var(--signal)}
@@ -361,6 +365,11 @@ textarea{width:100%;min-height:90px;background:var(--ink);color:var(--bone);bord
 .qty button{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--ink)}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--bone);color:var(--ink);padding:10px 16px;border-radius:var(--r);font-weight:700;z-index:90;font-size:.9rem}
 
+/* ambient pulse: a faint heartbeat trace sweeping a dot grid, behind everything */
+#pulse{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#landing,#app,#shop{position:relative;z-index:1}
+html{background:var(--ink)}
+body{background:transparent}
 /* demo videos (real people) replace the guide figure when present */
 .pl-body video.big{width:min(300px,62vw,38vh);aspect-ratio:1/1;object-fit:cover;background:var(--plate);border-radius:16px}
 .modal video{width:100%;aspect-ratio:1/1;object-fit:cover;background:var(--ink);border-radius:8px}
@@ -375,6 +384,8 @@ textarea{width:100%;min-height:90px;background:var(--ink);color:var(--bone);bord
 
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
+
+<canvas id="pulse" aria-hidden="true"></canvas>
 </head>
 <body>
 <!-- ======================= LANDING ======================= -->
@@ -396,8 +407,8 @@ textarea{width:100%;min-height:90px;background:var(--ink);color:var(--bone);bord
 
   <header class="hero" id="top">
     <div class="wrap hero-grid">
+      <h1 class="wordmark">PROOF<span class="sq"></span></h1>
       <div>
-        <h1 class="wordmark">PROOF<span class="sq"></span></h1>
         <div class="strap"><span>No A.I.</span><span class="sl">//</span><span>Real people</span><span class="sl">//</span><span>Real reps</span></div>
         <p class="lede">A 30-day bodyweight programme written by a coach's rulebook, not a generator. No filters, no actors, no before-and-after you can't check. You do the reps, the app keeps the receipts, and on Day 30 you re-take the Day 1 test. The numbers are the proof.</p>
         <div class="ctas">
@@ -406,12 +417,11 @@ textarea{width:100%;min-height:90px;background:var(--ink);color:var(--bone);bord
         </div>
       </div>
       <div class="hero-card" aria-label="Preview of a set in the workout player">
-        <img class="icon" src="assets/proof-icon.png" alt="PROOF app icon">
-        <div class="row"><span class="label">Day 8 · Build · Set 2 of 3</span></div>
-        <svg class="fig" id="heroFig" viewBox="0 -6 100 100" role="img" aria-label="Animated figure doing standing knee-to-elbow crunches"></svg>
+        <div class="row"><span class="label">Day 8 · Set 2 of 3</span><img class="icon" src="assets/proof-icon.png" alt="PROOF app icon"></div>
+        <svg class="fig" id="heroFig" viewBox="0 -6 100 100" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated figure doing standing knee-to-elbow crunches"></svg>
         <div class="row"><span class="ex">Standing knee-to-elbow</span><span class="big" id="heroCount">0</span></div>
         <div class="tick-strip" id="heroTicks"></div>
-        <div class="row"><span class="note">Target 25 · alternate sides</span><span class="note mono">rest 0:45 next</span></div>
+        <div class="row"><span class="note">Target 25 · alternate sides</span></div>
       </div>
     </div>
   </header>
@@ -1745,6 +1755,65 @@ document.addEventListener("click", e => {
   if (e.target.closest("#bagBtn")) renderBag();
 });
 document.addEventListener("keydown", e => { if (e.key === "Escape"){ $("#drawer").hidden = true; closeModal(); } });
+
+/* =========================================================
+   AMBIENT PULSE: dot grid + heartbeat trace in signal red
+   ========================================================= */
+(function pulse(){
+  const cv = $("#pulse"), ctx = cv.getContext("2d");
+  const GAP = 30, SPEED = 230, TRAIL = 520, BEAT = 300;
+  let W = 0, H = 0, dpr = 1, grid = null, run = null, wait = 1200, last = performance.now();
+  function size(){
+    dpr = Math.min(2, window.devicePixelRatio || 1); W = innerWidth; H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    grid = document.createElement("canvas"); grid.width = cv.width; grid.height = cv.height;
+    const g = grid.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.fillStyle = "rgba(236,231,223,.07)";
+    for (let y = GAP/2; y < H; y += GAP) for (let x = GAP/2; x < W; x += GAP){ g.beginPath(); g.arc(x, y, 1, 0, 6.283); g.fill(); }
+  }
+  /* one heartbeat: flat, P bump, sharp QRS spike, T bump, flat */
+  function ecg(u){
+    const t = ((u % BEAT) + BEAT) % BEAT / BEAT;
+    const bump = (c, w, h) => h * Math.exp(-((t - c) ** 2) / (2 * w * w));
+    let y = bump(.22, .025, -7) + bump(.62, .045, -11);
+    if (t > .38 && t < .41) y += (t - .38) / .03 * 8;
+    else if (t >= .41 && t < .44) y += 8 - (t - .41) / .03 * 54;
+    else if (t >= .44 && t < .475) y += -46 + (t - .44) / .035 * 58;
+    else if (t >= .475 && t < .5) y += 12 - (t - .475) / .025 * 12;
+    return y;
+  }
+  function newRun(){ const rows = Math.max(3, Math.floor(H / GAP)); const row = 2 + Math.floor(Math.random() * (rows - 3)); run = {y: row * GAP + GAP/2, x: -40, phase: Math.random() * BEAT}; }
+  function frame(now){
+    const dt = Math.min(64, now - last); last = now;
+    ctx.clearRect(0, 0, W, H); ctx.drawImage(grid, 0, 0, W, H);
+    if (!run){ wait -= dt; if (wait <= 0) newRun(); }
+    if (run){
+      run.x += SPEED * dt / 1000;
+      const x0 = Math.max(0, run.x - TRAIL);
+      ctx.lineWidth = 1.6; ctx.lineJoin = "round"; ctx.lineCap = "round";
+      for (let x = x0; x < run.x; x += 6){            /* trail in short segments, fading toward the tail */
+        const a = (x - (run.x - TRAIL)) / TRAIL;
+        ctx.strokeStyle = `rgba(229,73,45,${(.42 * a * a).toFixed(3)})`;
+        ctx.beginPath(); ctx.moveTo(x, run.y + ecg(x + run.phase)); ctx.lineTo(x + 6, run.y + ecg(x + 6 + run.phase)); ctx.stroke();
+      }
+      const hy = run.y + ecg(run.x + run.phase);
+      const glow = ctx.createRadialGradient(run.x, hy, 0, run.x, hy, 26);
+      glow.addColorStop(0, "rgba(229,73,45,.55)"); glow.addColorStop(1, "rgba(229,73,45,0)");
+      ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(run.x, hy, 26, 0, 6.283); ctx.fill();
+      ctx.fillStyle = "rgba(255,214,200,.9)"; ctx.beginPath(); ctx.arc(run.x, hy, 1.8, 0, 6.283); ctx.fill();
+      /* dots near the head light up briefly */
+      const gx0 = Math.floor((run.x - 90) / GAP), gx1 = Math.ceil((run.x + 20) / GAP);
+      for (let gx = gx0; gx <= gx1; gx++) for (let gy = -3; gy <= 3; gy++){
+        const px = gx * GAP + GAP/2, py = run.y + gy * GAP, d = Math.hypot(px - run.x, py - hy);
+        if (d < 90 && px > 0){ ctx.fillStyle = `rgba(236,231,223,${(.32 * (1 - d / 90)).toFixed(3)})`; ctx.beginPath(); ctx.arc(px, py, 1.3, 0, 6.283); ctx.fill(); }
+      }
+      if (run.x - TRAIL > W){ run = null; wait = 2500 + Math.random() * 3500; }
+    }
+    if (!document.hidden && $("#player").hidden) requestAnimationFrame(frame); else setTimeout(() => requestAnimationFrame(frame), 500);
+  }
+  size(); addEventListener("resize", size);
+  if (reduceMotion){ ctx.drawImage(grid, 0, 0, W, H); return; }
+  requestAnimationFrame(frame);
+})();
 
 /* =========================================================
    BOOT
