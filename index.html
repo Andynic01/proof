@@ -391,7 +391,7 @@ body{background:transparent}
 .hero-photo{position:absolute;top:0;right:0;height:100%;width:min(54%,860px);object-fit:cover;object-position:50% 0%;
   -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.55) 22%,#000 46%),linear-gradient(0deg,transparent 0,#000 22%);
   -webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.55) 22%,#000 46%),linear-gradient(0deg,transparent 0,#000 22%);mask-composite:intersect}
-.hero2-grid{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:end;min-height:inherit}
+.hero2-grid{position:relative;display:grid;grid-template-columns:minmax(0,1fr);gap:32px;align-items:end;min-height:inherit}
 .hero2-copy{max-width:620px;display:grid;gap:22px;align-content:center;align-self:center}
 .hero2 .strap{margin:0;font-size:.8rem}
 .headline{word-spacing:.1em;font-weight:900;font-variation-settings:"wdth" 66;text-transform:uppercase;font-size:clamp(3.4rem,8.4vw,7rem);line-height:.9;letter-spacing:-.005em;color:var(--bone)}
@@ -500,13 +500,6 @@ body{background:transparent}
         </div>
         <p class="hero2-facts">Three levels<i>•</i>Recovery days<i>•</i>No equipment required</p>
       </div>
-      <aside class="session-card" aria-label="Preview of today's session in the workout player">
-        <div class="sc-top"><span class="label">Today's session</span><img src="assets/proof-icon.png" alt="PROOF"></div>
-        <svg class="sc-fig" id="heroFig" viewBox="0 -6 100 100" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated figure doing standing knee-to-elbow crunches"></svg>
-        <b class="sc-ex">Standing knee-to-elbow</b>
-        <div class="sc-row"><span class="sc-set">Set 2 of 3</span><span class="sc-reps"><b id="heroCount">25</b> reps</span></div>
-        <div class="sc-row"><div class="segs" id="heroTicks"></div><span class="sc-rest">Rest 20s</span></div>
-      </aside>
     </div>
   </header>
 
@@ -1164,6 +1157,7 @@ const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 function buildLanding(){
+  if ($("#heroFig")) {  /* hero session card (currently not on the page) */
   mkFig($("#heroFig"), "knee_to_elbow");
   const ticks = $("#heroTicks"); ticks.innerHTML = Array.from({length:10}, () => "<i></i>").join("");
   const ex = EX.knee_to_elbow, cyc = ex.d[0] + ex.d[1]; let last = -1; const t0 = performance.now();
@@ -1172,6 +1166,7 @@ function buildLanding(){
     if (reps !== last){ last = reps; $("#heroCount").textContent = reps; [...ticks.children].forEach((el,i) => el.classList.toggle("on", i < Math.ceil(reps / 2.5))); }
     if (!reduceMotion) setTimeout(count, 120); else { $("#heroCount").textContent = 25; [...ticks.children].forEach(el => el.classList.add("on")); }
   })();
+  }
 
   $("#phaseCards").innerHTML = PHASES.map((p,i) => `<div class="phase ${i===3?"p4":""}"><span class="days">Days ${p.from}–${p.to}</span><span class="pn">${p.name}</span><p>${p.p}</p></div>`).join("");
   $("#landingMap").innerHTML = DAYS.map(d => `<div class="cell ${d.type}" title="Day ${d.n}: ${esc(d.title)}"><span class="d">${String(d.n).padStart(2,"0")}</span><span class="t">${d.type==="T"?"Test":TYPES[d.type].name.split(" ")[0]}</span></div>`).join("");
