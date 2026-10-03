@@ -1,5 +1,5 @@
 /* PROOF: offline support. Built by build.py; version changes with the content. */
-const CACHE = "proof-cacdaa95b6", FONTS = "proof-fonts";
+const CACHE = "proof-0889f86cac", FONTS = "proof-fonts";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/apple-touch-icon.png", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "assets/proof-icon.png", "assets/wordmark-dark.jpg", "assets/wordmark-light.jpg"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => {
