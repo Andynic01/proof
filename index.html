@@ -334,6 +334,8 @@ textarea{width:100%;min-height:90px;background:var(--ink);color:var(--bone);bord
 .prod .stage{background:var(--stage);border-radius:10px;aspect-ratio:1/1;display:block;width:100%;border:0;padding:0;overflow:hidden;position:relative}
 .prod .stage svg,.prod .stage img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .35s}
 .prod .stage:hover svg,.prod .stage:hover img{transform:scale(1.04)}
+.prod .stage img.back{position:absolute;inset:0;opacity:0;transition:opacity .3s}
+@media (hover:hover){.prod .stage.flip:hover img.back{opacity:1}}
 .grid-h{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:8px;margin-top:12px}
 .prod .flag{position:absolute;top:10px;left:10px;background:var(--ink);color:var(--bone);font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border-radius:3px}
 .prod .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
@@ -1678,6 +1680,8 @@ const APPAREL = ["XS","S","M","L","XL","XXL"];
 const PRODUCTS = [
   {id:"tee",name:"Training T-Shirt",cat:"Tops",price:28,draw:"tee",colours:["black"],photo:"assets/merch/tee.jpg",sizes:APPAREL,flag:"Core",desc:"The everyday training tee. PROOF. wordmark and the full strapline across the chest.",spec:"Draft spec: 200 gsm combed cotton, regular fit, ribbed collar."},
   {id:"oversized",name:"Oversized T-Shirt",cat:"Tops",price:32,draw:"oversized",colours:["white"],photo:"assets/merch/oversized.jpg",sizes:APPAREL,desc:"Dropped shoulders, boxy cut, in white with the tick-mark PROOF logo across the chest.",spec:"Draft spec: 240 gsm heavyweight cotton, oversized fit."},
+  {id:"badgetee",name:"Badge Training T-Shirt",cat:"Tops",price:30,draw:"tee",colours:["black"],photo:"assets/merch/badge-tee-front.jpg",photoBack:"assets/merch/badge-tee-back.jpg",sizes:APPAREL,flag:"New",desc:"The bar-and-P badge on the chest, the full PROOF. wordmark and strapline across the back.",spec:"Draft spec: 200 gsm combed cotton, regular fit, ribbed collar."},
+  {id:"badgeos",name:"Badge Oversized T-Shirt",cat:"Tops",price:34,draw:"oversized",colours:["white"],photo:"assets/merch/badge-os-front.jpg",photoBack:"assets/merch/badge-os-back.jpg",sizes:APPAREL,flag:"New",desc:"White, boxy and dropped-shoulder. Badge on the chest, big wordmark and strapline on the back.",spec:"Draft spec: 240 gsm heavyweight cotton, oversized fit."},
   {id:"tank",name:"Training Tank",cat:"Tops",price:24,draw:"tank",back:true,colours:["ink","bone","signal"],sizes:APPAREL,desc:"Deep armholes for full range on pull-ups and pike push-ups.",spec:"Draft spec: lightweight cotton–poly blend, quick-drying."},
   {id:"bra",name:"Sports Bra",cat:"Tops",price:32,draw:"bra",colours:["black"],photo:"assets/merch/bra.jpg",sizes:["XS","S","M","L","XL"],desc:"Medium support for bodyweight work, racer back, tick-mark logo across the front.",spec:"Draft spec: recycled polyester–elastane, removable pads."},
   {id:"hoodie",name:"Pullover Hoodie",cat:"Outerwear",price:55,draw:"hoodie",colours:["black"],photo:"assets/merch/hoodie.jpg",sizes:APPAREL,flag:"Core",desc:"Heavy, soft, made for the walk to the bar. Wordmark and strapline on the chest.",spec:"Draft spec: 400 gsm brushed-back fleece, kangaroo pocket."},
@@ -1704,7 +1708,10 @@ const PRODUCTS = [
   {id:"chalk",name:"Chalk Bag",cat:"Training gear",price:15,draw:"chalk",colours:["ink","signal"],sizes:["One size"],desc:"Clip it to the bar for long hangs and negatives.",spec:"Draft spec: drawcord top, belt loop."},
 ];
 const CATS = ["All", ...new Set(PRODUCTS.map(p => p.cat))];
-const productSVG = (p, k, view = "front") => p.photo ? `<img src="${p.photo}" alt="${esc(p.name)}" loading="lazy">` : productDraw(p, k, view);
+const productSVG = (p, k, view = "front") => p.photo
+  ? `<img src="${view === "back" && p.photoBack ? p.photoBack : p.photo}" alt="${esc(p.name)}${view === "back" ? ", back" : ""}" loading="lazy">`
+  : productDraw(p, k, view);
+const hasBack = p => p.photo ? !!p.photoBack : !!p.back;
 const productDraw = (p, k, view = "front") => `<svg viewBox="0 0 200 200" role="img" aria-label="${esc(p.name)} in ${COLOURS[k].n}${view === "back" ? ", back" : ""}">${DRAW[p.draw](k, view)}</svg>`;
 const money = n => "£" + n.toFixed(n % 1 ? 2 : 0);
 
@@ -1723,7 +1730,7 @@ function renderShop(){
   const list = PRODUCTS.filter(p => shopCat === "All" || p.cat === shopCat);
   const card = p => { const k = pick[p.id] || p.colours[0]; return `
     <article class="prod" data-pid="${p.id}">
-      <button class="stage" data-view-prod="${p.id}" aria-label="View ${esc(p.name)}">${productSVG(p, k)}${p.flag ? `<span class="flag">${p.flag}</span>` : ""}</button>
+      <button class="stage${p.photoBack ? " flip" : ""}" data-view-prod="${p.id}" aria-label="View ${esc(p.name)}">${productSVG(p, k)}${p.photoBack ? `<img class="back" src="${p.photoBack}" alt="" loading="lazy">` : ""}${p.flag ? `<span class="flag">${p.flag}</span>` : ""}</button>
       <div class="top"><b>${esc(p.name)}</b><span class="price">${money(p.price)}</span></div>
       <span class="sub">${COLOURS[k].n}${p.colours.length > 1 ? ` · ${p.colours.length} colours` : ""}${p.photo ? "" : " · sketch"}</span>
       <div class="sw">${p.colours.map(c => `<button data-sw="${p.id}:${c}" aria-pressed="${c === k}" aria-label="${COLOURS[c].n}" style="background:${COLOURS[c].c}"></button>`).join("")}</div>
@@ -1739,7 +1746,7 @@ function viewProduct(id, k, view = "front", size = null){
   const m = $("#modal"); m.classList.add("pmodal");
   m.innerHTML = `<div class="box" role="dialog" aria-modal="true" aria-label="${esc(p.name)}">
     <div><div class="stage">${productSVG(p, k, view)}</div>
-      ${p.back ? `<div class="views"><button class="btn small ${view === "front" ? "" : "ghost"}" data-pv="front">Front</button><button class="btn small ${view === "back" ? "" : "ghost"}" data-pv="back">Back</button></div>` : ""}</div>
+      ${hasBack(p) ? `<div class="views"><button class="btn small ${view === "front" ? "" : "ghost"}" data-pv="front">Front</button><button class="btn small ${view === "back" ? "" : "ghost"}" data-pv="back">Back</button></div>` : ""}</div>
     <div style="display:grid;gap:14px;align-content:start;min-width:0">
       <button class="btn small ghost close" id="mClose">Close</button>
       <span class="label">${p.cat}</span>
