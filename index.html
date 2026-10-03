@@ -646,7 +646,7 @@ body{background:transparent}
       <div class="row-gap" style="justify-content:center"><button class="btn primary" data-open-app>Start Day 1</button><a class="btn" href="#shop" data-open-shop style="background:var(--paper-ink);color:var(--paper);border-color:var(--paper-ink)">Shop the kit</a></div>
     </div>
   </div>
-  <footer><div class="wrap"><span>PROOF<span class="sq"></span> · 30-day calisthenics</span><span class="tex-switch" aria-label="Background">Background <button data-tex="slate">Slate</button><button data-tex="plain">Plain</button></span><span>No A.I. // Real people // Real reps</span></div></footer>
+  <footer><div class="wrap"><span>PROOF<span class="sq"></span> · 30-day calisthenics</span><span>No A.I. // Real people // Real reps</span></div></footer>
 </div>
 
 <!-- ======================= APP ======================= -->
@@ -1854,14 +1854,7 @@ document.addEventListener("click", e => {
 });
 document.addEventListener("keydown", e => { if (e.key === "Escape"){ $("#drawer").hidden = true; closeModal(); } });
 
-/* background texture: slate by default, remembered per device */
-function setTex(t){
-  document.documentElement.classList.toggle("slate", t === "slate");
-  document.querySelectorAll("[data-tex]").forEach(b => b.setAttribute("aria-pressed", b.dataset.tex === t));
-  try{ localStorage.setItem("proof.tex", t); }catch(e){}
-}
-setTex((() => { try{ return localStorage.getItem("proof.tex") || "slate"; }catch(e){ return "slate"; } })());
-document.addEventListener("click", e => { const b = e.target.closest("[data-tex]"); if (b) setTex(b.dataset.tex); });
+document.documentElement.classList.add("slate");
 
 /* =========================================================
    AMBIENT PULSE: dot grid + heartbeat trace in signal red
