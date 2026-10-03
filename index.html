@@ -372,6 +372,33 @@ textarea{width:100%;min-height:90px;background:var(--ink);color:var(--bone);bord
 #landing,#app,#shop{position:relative;z-index:1}
 html{background:var(--ink)}
 body{background:transparent}
+/* ---------- phone fit ---------- */
+.nw{white-space:nowrap}
+@media (max-width:760px){
+  .hero-card{justify-self:stretch;width:100%;max-width:360px;margin-top:20px}
+  .hero-card .fig{aspect-ratio:16/10}
+}
+@media (max-width:640px){
+  /* app tabs become a bottom tab bar */
+  .app-bar .wrap{justify-content:center}
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:color-mix(in srgb,var(--ink) 94%,transparent);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;overflow:visible}
+  .tab{padding:10px 2px;font-size:.66rem;letter-spacing:.06em;text-align:center}
+  .tab[aria-selected="true"]{color:var(--signal);background:var(--plate)}
+  .app-main{padding-block:20px 110px}
+  /* player controls stay on one row */
+  .pl-bottom{flex-wrap:nowrap;gap:8px}
+  .pl-bottom .btn{flex:1;min-width:0;padding-inline:.5em}
+  /* shop: two products per row, single-column product sheet */
+  .shop-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 12px;padding-block:20px 60px}
+  .prod .top{flex-direction:column;gap:2px}
+  .prod b{font-size:.88rem}
+  .prod .flag{top:6px;left:6px;font-size:.58rem;padding:3px 6px}
+  .pmodal .box{grid-template-columns:minmax(0,1fr);padding:16px;gap:14px}
+  .modal{padding:10px;align-items:start}
+  .modal .box{max-height:calc(100% - 20px)}
+  .shop-bar{top:calc(env(safe-area-inset-top,0px) + 60px)}
+  .kpi .v{font-size:1.4rem}
+}
 /* demo videos (real people) replace the guide figure when present */
 .pl-body video.big{width:min(300px,62vw,38vh);aspect-ratio:1/1;object-fit:cover;background:var(--plate);border-radius:16px}
 .modal video{width:100%;aspect-ratio:1/1;object-fit:cover;background:var(--ink);border-radius:8px}
@@ -598,7 +625,7 @@ body{background:transparent}
     <div class="wrap">
       <div>
         <span class="label">PROOF Supply</span>
-        <h1>Kit for<br>real reps<span class="sq"></span></h1>
+        <h1>Kit for<br>real <span class="nw">reps<span class="sq"></span></span></h1>
         <p>Training wear and gear carrying the bar-and-P mark. Built to be sweated in, washed a hundred times, and worn on Day 31.</p>
       </div>
       <p class="prelaunch"><b>Pre-launch.</b> Product images are design mock-ups, not photos of finished stock. Prices are suggested launch prices and the specs are drafts. You can build a bag to plan an order, but nothing can be bought or charged yet.</p>
