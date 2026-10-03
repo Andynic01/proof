@@ -1,6 +1,6 @@
 /* PROOF: offline support. Built by build.py; version changes with the content. */
-const CACHE = "proof-e5f6c5f47f", FONTS = "proof-fonts";
-const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/apple-touch-icon.png", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "assets/proof-icon.png", "assets/wordmark-dark.jpg", "assets/wordmark-light.jpg"];
+const CACHE = "proof-94acb8dd16", FONTS = "proof-fonts";
+const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/apple-touch-icon.png", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "assets/proof-icon.png", "assets/wordmark-dark.jpg", "assets/wordmark-light.jpg", "assets/merch/backpack.jpg", "assets/merch/bath.jpg", "assets/merch/bottle.jpg", "assets/merch/bra.jpg", "assets/merch/cap.jpg", "assets/merch/holdall.jpg", "assets/merch/hoodie.jpg", "assets/merch/joggers.jpg", "assets/merch/leggings.jpg", "assets/merch/oversized.jpg", "assets/merch/shaker.jpg", "assets/merch/shorts.jpg", "assets/merch/socks.jpg", "assets/merch/tee.jpg", "assets/merch/towel.jpg", "assets/merch/zip.jpg"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => {
   e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k.startsWith("proof-") && k !== CACHE && k !== FONTS).map(k => caches.delete(k)))).then(() => self.clients.claim()));

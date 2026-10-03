@@ -332,8 +332,9 @@ textarea{width:100%;min-height:90px;background:var(--ink);color:var(--bone);bord
 .shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:18px;padding-block:28px 72px}
 .prod{display:grid;gap:10px;align-content:start;min-width:0}
 .prod .stage{background:var(--stage);border-radius:10px;aspect-ratio:1/1;display:block;width:100%;border:0;padding:0;overflow:hidden;position:relative}
-.prod .stage svg{width:100%;height:100%;display:block;transition:transform .35s}
-.prod .stage:hover svg{transform:scale(1.04)}
+.prod .stage svg,.prod .stage img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .35s}
+.prod .stage:hover svg,.prod .stage:hover img{transform:scale(1.04)}
+.grid-h{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:8px;margin-top:12px}
 .prod .flag{position:absolute;top:10px;left:10px;background:var(--ink);color:var(--bone);font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border-radius:3px}
 .prod .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
 .prod b{font-weight:700;font-size:1rem;line-height:1.25}
@@ -347,7 +348,7 @@ textarea{width:100%;min-height:90px;background:var(--ink);color:var(--bone);bord
 .sizes button[aria-pressed="true"]{border-color:var(--bone);background:var(--bone);color:var(--ink)}
 .pmodal .box{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);max-width:920px}
 .pmodal .stage{background:var(--stage);border-radius:10px;aspect-ratio:1/1;overflow:hidden}
-.pmodal .stage svg{width:100%;height:100%;display:block;background:none;border-radius:0}
+.pmodal .stage svg,.pmodal .stage img{width:100%;height:100%;display:block;object-fit:cover;background:none;border-radius:0;aspect-ratio:auto}
 .pmodal .views{display:flex;gap:6px;margin-top:10px}
 .pmodal .price{font-family:var(--f-mono);font-weight:600;font-size:1.4rem}
 .pmodal .spec{color:var(--dust);font-size:.86rem;margin-top:4px}
@@ -359,7 +360,8 @@ textarea{width:100%;min-height:90px;background:var(--ink);color:var(--bone);bord
 .drawer .items{overflow:auto;padding:8px 16px;display:grid;gap:12px;align-content:start}
 .line{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center}
 .line .th{background:var(--stage);border-radius:6px;aspect-ratio:1/1}
-.line .th svg{width:100%;height:100%;display:block}
+.line .th{overflow:hidden}
+.line .th svg,.line .th img{width:100%;height:100%;display:block;object-fit:cover}
 .line small{display:block;color:var(--dust)}
 .qty{display:flex;align-items:center;gap:6px}
 .qty button{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--ink)}
@@ -599,7 +601,7 @@ body{background:transparent}
         <h1>Kit for<br>real reps<span class="sq"></span></h1>
         <p>Training wear and gear carrying the bar-and-P mark. Built to be sweated in, washed a hundred times, and worn on Day 31.</p>
       </div>
-      <p class="prelaunch"><b>Pre-launch.</b> These are design mock-ups. Prices are suggested launch prices and the specs are drafts. You can build a bag to plan an order, but nothing can be bought or charged yet.</p>
+      <p class="prelaunch"><b>Pre-launch.</b> Product images are design mock-ups, not photos of finished stock. Prices are suggested launch prices and the specs are drafts. You can build a bag to plan an order, but nothing can be bought or charged yet.</p>
     </div>
   </header>
   <div class="shop-bar"><div class="wrap" id="cats"></div></div>
@@ -1545,6 +1547,9 @@ const COLOURS = {
   stone:{n:"Stone",c:"#77716a",L:BONEC},
   steel:{n:"Steel",c:"#b8b5ae",L:INKC},
   birch:{n:"Birch",c:"#c99f6b",L:INKC},
+  black:{n:"Black",c:"#161616",L:BONEC},
+  white:{n:"White",c:"#f4f2ee",L:INKC},
+  charcoal:{n:"Charcoal",c:"#3d3c3a",L:BONEC},
 };
 const OUT = 'stroke="rgba(0,0,0,.38)" stroke-width="1.2" stroke-linejoin="round"';
 const shp = (d, c) => `<path d="${d}" fill="${c}" ${OUT}/>`;
@@ -1644,26 +1649,27 @@ const DRAW = {
 
 const APPAREL = ["XS","S","M","L","XL","XXL"];
 const PRODUCTS = [
-  {id:"tee",name:"Proof Tee",cat:"Tops",price:28,draw:"tee",back:true,colours:["ink","bone","signal","stone"],sizes:APPAREL,flag:"Core",desc:"The everyday training tee. Wordmark on the chest, the full strapline across the back.",spec:"Draft spec: 200 gsm combed cotton, regular fit, ribbed collar."},
-  {id:"oversized",name:"Bar Mark Oversized Tee",cat:"Tops",price:32,draw:"oversized",back:true,colours:["ink","bone","stone"],sizes:APPAREL,desc:"Dropped shoulders, boxy cut. Small bar-and-P badge on the chest, big back print.",spec:"Draft spec: 240 gsm heavyweight cotton, oversized fit."},
+  {id:"tee",name:"Training T-Shirt",cat:"Tops",price:28,draw:"tee",colours:["black"],photo:"assets/merch/tee.jpg",sizes:APPAREL,flag:"Core",desc:"The everyday training tee. PROOF. wordmark and the full strapline across the chest.",spec:"Draft spec: 200 gsm combed cotton, regular fit, ribbed collar."},
+  {id:"oversized",name:"Oversized T-Shirt",cat:"Tops",price:32,draw:"oversized",colours:["white"],photo:"assets/merch/oversized.jpg",sizes:APPAREL,desc:"Dropped shoulders, boxy cut, in white with the tick-mark PROOF logo across the chest.",spec:"Draft spec: 240 gsm heavyweight cotton, oversized fit."},
   {id:"tank",name:"Training Tank",cat:"Tops",price:24,draw:"tank",back:true,colours:["ink","bone","signal"],sizes:APPAREL,desc:"Deep armholes for full range on pull-ups and pike push-ups.",spec:"Draft spec: lightweight cotton–poly blend, quick-drying."},
-  {id:"bra",name:"Sports Bra",cat:"Tops",price:32,draw:"bra",back:true,colours:["ink","bone","signal"],sizes:["XS","S","M","L","XL"],desc:"Medium support for bodyweight work. Wordmark on the underband.",spec:"Draft spec: recycled polyester–elastane, removable pads."},
-  {id:"hoodie",name:"Proof Hoodie",cat:"Outerwear",price:55,draw:"hoodie",back:true,colours:["ink","bone","stone","signal"],sizes:APPAREL,flag:"Core",desc:"Heavy, soft, made for the walk to the bar. Wordmark front, strapline back.",spec:"Draft spec: 400 gsm brushed-back fleece, kangaroo pocket."},
+  {id:"bra",name:"Sports Bra",cat:"Tops",price:32,draw:"bra",colours:["black"],photo:"assets/merch/bra.jpg",sizes:["XS","S","M","L","XL"],desc:"Medium support for bodyweight work, racer back, tick-mark logo across the front.",spec:"Draft spec: recycled polyester–elastane, removable pads."},
+  {id:"hoodie",name:"Pullover Hoodie",cat:"Outerwear",price:55,draw:"hoodie",colours:["black"],photo:"assets/merch/hoodie.jpg",sizes:APPAREL,flag:"Core",desc:"Heavy, soft, made for the walk to the bar. Wordmark and strapline on the chest.",spec:"Draft spec: 400 gsm brushed-back fleece, kangaroo pocket."},
+  {id:"zip",name:"Zip Hoodie",cat:"Outerwear",price:58,draw:"hoodie",colours:["charcoal"],photo:"assets/merch/zip.jpg",sizes:APPAREL,desc:"Full-zip hoodie in charcoal marl with the tick-mark PROOF logo on the chest.",spec:"Draft spec: 350 gsm brushed fleece, metal zip, split kangaroo pocket."},
   {id:"jacket",name:"Track Jacket",cat:"Outerwear",price:60,draw:"jacket",back:true,colours:["ink","stone","bone"],sizes:APPAREL,desc:"Full zip, stand collar, signal-red stripes down both arms.",spec:"Draft spec: matte tricot, zipped side pockets."},
-  {id:"joggers",name:"Tracksuit Bottoms",cat:"Bottoms",price:45,draw:"joggers",back:true,colours:["ink","stone","bone"],sizes:APPAREL,flag:"Core",desc:"Tapered with cuffed ankles and side stripes. Pairs with the hoodie or the track jacket.",spec:"Draft spec: 320 gsm fleece, zip pockets, drawcord waist."},
-  {id:"leggings",name:"Leggings",cat:"Bottoms",price:42,draw:"leggings",back:true,colours:["ink","stone","signal"],sizes:["XS","S","M","L","XL"],desc:"High waist, squat-proof, vertical wordmark down the thigh.",spec:"Draft spec: 4-way stretch nylon–elastane, waistband pocket."},
-  {id:"shorts",name:"Training Shorts",cat:"Bottoms",price:30,draw:"shorts",back:true,colours:["ink","stone","signal"],sizes:APPAREL,desc:"7-inch inseam, split hem for lunges and high knees.",spec:"Draft spec: lightweight woven poly, liner optional."},
-  {id:"socks",name:"Crew Socks (3 pack)",cat:"Accessories",price:14,draw:"socks",colours:["ink","bone"],sizes:["S/M","L/XL"],desc:"Cushioned sole, arch support, wordmark down the calf.",spec:"Draft spec: cotton-rich blend."},
-  {id:"cap",name:"Bar Cap",cat:"Accessories",price:22,draw:"cap",colours:["ink","bone","stone"],sizes:["One size"],desc:"Six-panel cap with the bar-and-P badge on the front.",spec:"Draft spec: cotton twill, adjustable strap."},
+  {id:"joggers",name:"Tracksuit Bottoms",cat:"Bottoms",price:45,draw:"joggers",colours:["black"],photo:"assets/merch/joggers.jpg",sizes:APPAREL,flag:"Core",desc:"Tapered with cuffed ankles and the wordmark running down the leg. Pairs with either hoodie.",spec:"Draft spec: 320 gsm fleece, zip pockets, drawcord waist."},
+  {id:"leggings",name:"Performance Leggings",cat:"Bottoms",price:42,draw:"leggings",colours:["black"],photo:"assets/merch/leggings.jpg",sizes:["XS","S","M","L","XL"],desc:"High waist, squat-proof, with the wordmark on the hip.",spec:"Draft spec: 4-way stretch nylon–elastane, waistband pocket."},
+  {id:"shorts",name:"Training Shorts",cat:"Bottoms",price:30,draw:"shorts",colours:["black"],photo:"assets/merch/shorts.jpg",sizes:APPAREL,desc:"7-inch inseam, drawcord waist, wordmark on the leg.",spec:"Draft spec: lightweight woven poly, liner optional."},
+  {id:"socks",name:"Crew Socks (3 pack)",cat:"Accessories",price:14,draw:"socks",colours:["white"],photo:"assets/merch/socks.jpg",sizes:["S/M","L/XL"],desc:"White crew socks with a cushioned sole and the wordmark at the top.",spec:"Draft spec: cotton-rich blend."},
+  {id:"cap",name:"Cap",cat:"Accessories",price:22,draw:"cap",colours:["black"],photo:"assets/merch/cap.jpg",sizes:["One size"],desc:"Six-panel cap with the tick-mark PROOF logo and strapline on the front.",spec:"Draft spec: cotton twill, adjustable strap."},
   {id:"beanie",name:"Beanie",cat:"Accessories",price:20,draw:"beanie",colours:["ink","signal","stone"],sizes:["One size"],desc:"For winter-morning sessions in the garden. Badge on the cuff.",spec:"Draft spec: rib knit."},
   {id:"wristbands",name:"Sweat Wristbands (pair)",cat:"Accessories",price:9,draw:"wristbands",colours:["ink","bone","signal"],sizes:["One size"],desc:"Keeps sweat off your grip on bar days.",spec:"Draft spec: terry cotton."},
   {id:"headband",name:"Headband",cat:"Accessories",price:8,draw:"headband",colours:["ink","bone","signal"],sizes:["One size"],desc:"Wide terry band for burpee days.",spec:"Draft spec: terry cotton."},
-  {id:"bottle",name:"Steel Water Bottle",cat:"Bottles & towels",price:24,draw:"bottle",colours:["ink","bone","signal","steel"],sizes:["750 ml"],flag:"Core",desc:"Double-wall steel with the wordmark running up the side.",spec:"Draft spec: vacuum insulated, leak-proof loop lid."},
-  {id:"shaker",name:"Shaker",cat:"Bottles & towels",price:14,draw:"shaker",colours:["ink","bone","signal"],sizes:["700 ml"],desc:"Screw lid, flip spout, measuring marks on the side.",spec:"Draft spec: BPA-free plastic, mixing ball."},
-  {id:"towel",name:"Gym Towel",cat:"Bottles & towels",price:14,draw:"towel",colours:["ink","bone","stone"],sizes:["30 × 90 cm"],desc:"Sweat towel for the bench or the mat. Signal stripe, badge in the corner.",spec:"Draft spec: quick-dry microfibre."},
-  {id:"bath",name:"Large Towel",cat:"Bottles & towels",price:30,draw:"bath",colours:["ink","bone","stone"],sizes:["70 × 140 cm"],desc:"For after. Big wordmark above the stripe.",spec:"Draft spec: heavyweight cotton terry."},
-  {id:"holdall",name:"Gym Holdall",cat:"Bags",price:48,draw:"holdall",colours:["ink","stone","signal"],sizes:["35 L"],flag:"Core",desc:"Barrel bag with a vented shoe pocket and shoulder strap.",spec:"Draft spec: water-resistant poly, separate wet pocket."},
-  {id:"backpack",name:"Training Backpack",cat:"Bags",price:55,draw:"backpack",colours:["ink","stone","bone"],sizes:["25 L"],desc:"Laptop sleeve plus a front pocket for the bottle and towel.",spec:"Draft spec: padded straps, 15-inch laptop sleeve."},
+  {id:"bottle",name:"Water Bottle",cat:"Bottles & towels",price:24,draw:"bottle",colours:["black"],photo:"assets/merch/bottle.jpg",sizes:["750 ml"],flag:"Core",desc:"Double-wall steel with the wordmark and strapline running up the side.",spec:"Draft spec: vacuum insulated, leak-proof loop lid."},
+  {id:"shaker",name:"Shaker Bottle",cat:"Bottles & towels",price:14,draw:"shaker",colours:["black"],photo:"assets/merch/shaker.jpg",sizes:["700 ml"],desc:"Screw lid, flip spout, measuring marks on the side.",spec:"Draft spec: BPA-free plastic, mixing ball."},
+  {id:"towel",name:"Gym Towel",cat:"Bottles & towels",price:14,draw:"towel",colours:["black"],photo:"assets/merch/towel.jpg",sizes:["30 × 90 cm"],desc:"Sweat towel for the bench or the mat, with the wordmark and strapline.",spec:"Draft spec: quick-dry microfibre."},
+  {id:"bath",name:"Large Training Towel",cat:"Bottles & towels",price:30,draw:"bath",colours:["black"],photo:"assets/merch/bath.jpg",sizes:["70 × 140 cm"],desc:"For after. Large tick-mark PROOF logo with the strapline.",spec:"Draft spec: heavyweight cotton terry."},
+  {id:"holdall",name:"Gym Duffel Bag",cat:"Bags",price:48,draw:"holdall",colours:["black"],photo:"assets/merch/holdall.jpg",sizes:["35 L"],flag:"Core",desc:"Barrel bag with a vented shoe pocket and shoulder strap.",spec:"Draft spec: water-resistant poly, separate wet pocket."},
+  {id:"backpack",name:"Training Backpack",cat:"Bags",price:55,draw:"backpack",colours:["black"],photo:"assets/merch/backpack.jpg",sizes:["25 L"],desc:"Laptop sleeve plus a front pocket for the bottle and towel.",spec:"Draft spec: padded straps, 15-inch laptop sleeve."},
   {id:"drawstring",name:"Drawstring Bag",cat:"Bags",price:16,draw:"drawstring",colours:["ink","bone","signal"],sizes:["One size"],desc:"Light enough to fold into a pocket. Holds shoes, towel and bottle.",spec:"Draft spec: ripstop poly."},
   {id:"bar",name:"Doorway Pull-up Bar",cat:"Training gear",price:40,draw:"bar",colours:["signal","ink"],sizes:["Fits 66–96 cm doors"],flag:"The bar",desc:"The bar from the logo. Bar days in the programme are built around it.",spec:"Draft spec: steel, foam grips, no-screw fitting. Check your door frame before use."},
   {id:"rings",name:"Gymnastics Rings",cat:"Training gear",price:45,draw:"rings",colours:["birch","ink"],sizes:["Pair"],desc:"For dips, rows and the next 30 days. Wordmark printed on the straps.",spec:"Draft spec: birch wood, 4.5 m straps, numbered for even setup."},
@@ -1671,7 +1677,8 @@ const PRODUCTS = [
   {id:"chalk",name:"Chalk Bag",cat:"Training gear",price:15,draw:"chalk",colours:["ink","signal"],sizes:["One size"],desc:"Clip it to the bar for long hangs and negatives.",spec:"Draft spec: drawcord top, belt loop."},
 ];
 const CATS = ["All", ...new Set(PRODUCTS.map(p => p.cat))];
-const productSVG = (p, k, view = "front") => `<svg viewBox="0 0 200 200" role="img" aria-label="${esc(p.name)} in ${COLOURS[k].n}${view === "back" ? ", back" : ""}">${DRAW[p.draw](k, view)}</svg>`;
+const productSVG = (p, k, view = "front") => p.photo ? `<img src="${p.photo}" alt="${esc(p.name)}" loading="lazy">` : productDraw(p, k, view);
+const productDraw = (p, k, view = "front") => `<svg viewBox="0 0 200 200" role="img" aria-label="${esc(p.name)} in ${COLOURS[k].n}${view === "back" ? ", back" : ""}">${DRAW[p.draw](k, view)}</svg>`;
 const money = n => "£" + n.toFixed(n % 1 ? 2 : 0);
 
 let shopCat = "All";
@@ -1687,13 +1694,17 @@ function openShop(){
 function renderShop(){
   $("#cats").innerHTML = CATS.map(c => `<button class="cat" data-cat="${c}" aria-pressed="${c === shopCat}">${c}${c === "All" ? ` (${PRODUCTS.length})` : ""}</button>`).join("");
   const list = PRODUCTS.filter(p => shopCat === "All" || p.cat === shopCat);
-  $("#shopGrid").innerHTML = list.map(p => { const k = pick[p.id] || p.colours[0]; return `
+  const card = p => { const k = pick[p.id] || p.colours[0]; return `
     <article class="prod" data-pid="${p.id}">
       <button class="stage" data-view-prod="${p.id}" aria-label="View ${esc(p.name)}">${productSVG(p, k)}${p.flag ? `<span class="flag">${p.flag}</span>` : ""}</button>
       <div class="top"><b>${esc(p.name)}</b><span class="price">${money(p.price)}</span></div>
-      <span class="sub">${COLOURS[k].n} · ${p.colours.length} colour${p.colours.length > 1 ? "s" : ""}</span>
+      <span class="sub">${COLOURS[k].n}${p.colours.length > 1 ? ` · ${p.colours.length} colours` : ""}${p.photo ? "" : " · sketch"}</span>
       <div class="sw">${p.colours.map(c => `<button data-sw="${p.id}:${c}" aria-pressed="${c === k}" aria-label="${COLOURS[c].n}" style="background:${COLOURS[c].c}"></button>`).join("")}</div>
-    </article>`; }).join("");
+    </article>`; };
+  const photo = list.filter(p => p.photo), sketch = list.filter(p => !p.photo);
+  $("#shopGrid").innerHTML =
+    (photo.length ? `<div class="grid-h"><span class="label">The Training Collection</span><span class="note">${photo.length} pieces</span></div>` + photo.map(card).join("") : "")
+    + (sketch.length ? `<div class="grid-h"><span class="label">Coming next</span><span class="note">Design sketches. Photos to follow.</span></div>` + sketch.map(card).join("") : "");
 }
 function viewProduct(id, k, view = "front", size = null){
   const p = PRODUCTS.find(x => x.id === id); k = k || pick[id] || p.colours[0];
