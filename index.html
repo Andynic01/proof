@@ -380,6 +380,52 @@ html.slate{background:var(--ink) url("assets/slate.jpg") repeat;background-size:
 .tex-switch button{border:1px solid var(--line);background:transparent;color:var(--dust);border-radius:999px;padding:3px 10px;font-size:.74rem}
 .tex-switch button[aria-pressed="true"]{color:var(--bone);border-color:var(--dust)}
 body{background:transparent}
+/* ---------- hero (v2: photo, headline, session card) ---------- */
+.nav2 .wrap{height:72px}
+.brand-word{font-size:1.6rem;letter-spacing:-.01em}
+.brand-word .sq{width:.22em;height:.22em}
+.nav2 .links{gap:clamp(18px,3vw,40px)}
+.nav2 .links a{text-transform:uppercase;letter-spacing:.14em;font-size:.72rem;color:var(--bone)}
+.nav2 .links a:hover{color:var(--signal)}
+.hero2{position:relative;overflow:hidden;border-bottom:1px solid var(--line);padding-block:clamp(48px,7vw,88px) clamp(36px,5vw,64px);min-height:min(760px,92vh)}
+.hero-photo{position:absolute;top:0;right:0;height:100%;width:min(54%,860px);object-fit:cover;object-position:50% 0%;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.55) 22%,#000 46%),linear-gradient(0deg,transparent 0,#000 22%);
+  -webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.55) 22%,#000 46%),linear-gradient(0deg,transparent 0,#000 22%);mask-composite:intersect}
+.hero2-grid{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:end;min-height:inherit}
+.hero2-copy{max-width:620px;display:grid;gap:22px;align-content:center;align-self:center}
+.hero2 .strap{margin:0;font-size:.8rem}
+.headline{word-spacing:.1em;font-weight:900;font-variation-settings:"wdth" 66;text-transform:uppercase;font-size:clamp(3.4rem,8.4vw,7rem);line-height:.9;letter-spacing:-.005em;color:var(--bone)}
+.headline .red{color:var(--signal)}
+.headline .dot{color:var(--bone)}
+.hero2-sub{font-size:clamp(1.08rem,1.7vw,1.32rem);color:#d9d3c9;line-height:1.45}
+.hero2 .ctas{margin:0}
+.btn.big{padding:1.05em 1.6em;font-size:.86rem}
+.hero2 .btn.ghost{border-color:var(--bone);background:rgba(16,15,13,.35)}
+.hero2-facts{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dust);font-weight:600}
+.hero2-facts i{font-style:normal;margin-inline:.8em;color:var(--signal)}
+.session-card{width:290px;background:rgba(18,17,15,.86);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(236,231,223,.14);border-radius:14px;padding:14px;display:grid;gap:10px;box-shadow:0 24px 48px rgba(0,0,0,.45)}
+.sc-top{display:flex;justify-content:space-between;align-items:center}
+.sc-top img{width:24px;height:24px}
+.sc-fig{width:100%;aspect-ratio:16/11;background:#0b0a09;border-radius:8px}
+.sc-ex{font-weight:800;font-size:1.02rem}
+.sc-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.sc-set{font-weight:600}
+.sc-reps{color:var(--dust);font-weight:600}
+.sc-reps b{font-family:var(--f-mono);font-size:1.8rem;color:var(--bone);margin-right:4px}
+.segs{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;flex:1}
+.segs i{height:8px;border-radius:2px;background:var(--plate-2)}
+.segs i.on{background:var(--signal)}
+.sc-rest{font-size:.8rem;color:var(--dust);white-space:nowrap}
+@media (max-width:980px){.nav2 .links{display:none}}
+@media (max-width:760px){
+  .hero2{min-height:0;padding-block:40px 32px}
+  .hero-photo{width:100%;opacity:.3;object-position:60% 0%;-webkit-mask-image:linear-gradient(0deg,transparent 0,#000 45%);mask-image:linear-gradient(0deg,transparent 0,#000 45%)}
+  .hero2-grid{grid-template-columns:minmax(0,1fr)}
+  .session-card{width:100%;max-width:360px}
+  .nav2 .wrap{height:60px}
+  .nav2 .btn.primary{padding:.6em .9em;font-size:.72rem}
+}
+
 /* ---------- phone fit ---------- */
 .nw{white-space:nowrap}
 @media (max-width:760px){
@@ -427,39 +473,40 @@ body{background:transparent}
 <body>
 <!-- ======================= LANDING ======================= -->
 <div id="landing">
-  <nav class="nav">
+  <nav class="nav nav2">
     <div class="wrap">
-      <a class="brand" href="#top" aria-label="PROOF home"><img src="assets/proof-icon.png" alt="">PROOF<span class="sq"></span></a>
+      <a class="brand brand-word" href="#top" aria-label="PROOF home">PROOF<span class="sq"></span></a>
       <div class="spacer"></div>
       <div class="links">
-        <a href="#plan">The 30 days</a>
-        <a href="#session">A session</a>
+        <a href="#plan">The programme</a>
         <a href="#moves">The moves</a>
-        <a href="#tests">The tests</a>
+        <a href="#app" data-open-app="proof">Your progress</a>
         <a href="#shop" data-open-shop>Shop</a>
       </div>
-      <button class="btn primary small" data-open-app>Open the program</button>
+      <button class="btn primary" data-open-app>Start Day 1</button>
     </div>
   </nav>
 
-  <header class="hero" id="top">
-    <div class="wrap hero-grid">
-      <h1 class="wordmark">PROOF<span class="sq"></span></h1>
-      <div>
+  <header class="hero2" id="top">
+    <img class="hero-photo" src="assets/hero.jpg" alt="Two women in PROOF training kit, one in black and one in white, in a gym">
+    <div class="wrap hero2-grid">
+      <div class="hero2-copy">
         <div class="strap"><span>No A.I.</span><span class="sl">//</span><span>Real people</span><span class="sl">//</span><span>Real reps</span></div>
-        <p class="lede">A 30-day bodyweight programme written by a coach's rulebook, not a generator. No filters, no actors, no before-and-after you can't check. You do the reps, the app keeps the receipts, and on Day 30 you re-take the Day 1 test. The numbers are the proof.</p>
+        <h1 class="headline">30 days.<br>Make every<br><span class="red">rep count<span class="dot">.</span></span></h1>
+        <p class="hero2-sub">A bodyweight programme. A clear plan.<br>Progress you can measure.</p>
         <div class="ctas">
-          <button class="btn primary" data-open-app>Start Day 1</button>
-          <a class="btn ghost" href="#plan">See all 30 days</a>
+          <button class="btn primary big" data-open-app>Start Day 1</button>
+          <a class="btn ghost big" href="#plan">Explore the 30 days</a>
         </div>
+        <p class="hero2-facts">Three levels<i>•</i>Recovery days<i>•</i>No equipment required</p>
       </div>
-      <div class="hero-card" aria-label="Preview of a set in the workout player">
-        <div class="row"><span class="label">Day 8 · Set 2 of 3</span><img class="icon" src="assets/proof-icon.png" alt="PROOF app icon"></div>
-        <svg class="fig" id="heroFig" viewBox="0 -6 100 100" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated figure doing standing knee-to-elbow crunches"></svg>
-        <div class="row"><span class="ex">Standing knee-to-elbow</span><span class="big" id="heroCount">0</span></div>
-        <div class="tick-strip" id="heroTicks"></div>
-        <div class="row"><span class="note">Target 25 · alternate sides</span></div>
-      </div>
+      <aside class="session-card" aria-label="Preview of today's session in the workout player">
+        <div class="sc-top"><span class="label">Today's session</span><img src="assets/proof-icon.png" alt="PROOF"></div>
+        <svg class="sc-fig" id="heroFig" viewBox="0 -6 100 100" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Animated figure doing standing knee-to-elbow crunches"></svg>
+        <b class="sc-ex">Standing knee-to-elbow</b>
+        <div class="sc-row"><span class="sc-set">Set 2 of 3</span><span class="sc-reps"><b id="heroCount">25</b> reps</span></div>
+        <div class="sc-row"><div class="segs" id="heroTicks"></div><span class="sc-rest">Rest 20s</span></div>
+      </aside>
     </div>
   </header>
 
@@ -1118,11 +1165,11 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":
 
 function buildLanding(){
   mkFig($("#heroFig"), "knee_to_elbow");
-  const ticks = $("#heroTicks"); ticks.innerHTML = Array.from({length:25}, () => "<i></i>").join("");
+  const ticks = $("#heroTicks"); ticks.innerHTML = Array.from({length:10}, () => "<i></i>").join("");
   const ex = EX.knee_to_elbow, cyc = ex.d[0] + ex.d[1]; let last = -1; const t0 = performance.now();
   (function count(){
     const reps = Math.floor((performance.now() - t0) / cyc) % 26;
-    if (reps !== last){ last = reps; $("#heroCount").textContent = reps; [...ticks.children].forEach((el,i) => el.classList.toggle("on", i < reps)); }
+    if (reps !== last){ last = reps; $("#heroCount").textContent = reps; [...ticks.children].forEach((el,i) => el.classList.toggle("on", i < Math.ceil(reps / 2.5))); }
     if (!reduceMotion) setTimeout(count, 120); else { $("#heroCount").textContent = 25; [...ticks.children].forEach(el => el.classList.add("on")); }
   })();
 
@@ -1164,7 +1211,7 @@ function setTab(t){
   window.scrollTo(0,0);
 }
 document.addEventListener("click", e => {
-  const a = e.target.closest("[data-open-app]"); if (a){ e.preventDefault(); openApp("today"); }
+  const a = e.target.closest("[data-open-app]"); if (a){ e.preventDefault(); openApp(a.dataset.openApp || "today"); }
   const tb = e.target.closest(".tab"); if (tb && S.onboarded) setTab(tb.dataset.tab);
   const exb = e.target.closest("[data-ex]"); if (exb) openExercise(exb.dataset.ex);
   const dd = e.target.closest("[data-day]"); if (dd) renderDayDetail(+dd.dataset.day);
